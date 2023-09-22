@@ -14,20 +14,20 @@ const userThoughtsSchema = new Schema (
             type: String,
             unique: true,
             require: "Username is required!",
-            match: [/.+@.+\..+/],
+            match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/],
         },
 
         thoughts: [
             {
                 type: Schema.Types.ObjectId,
-                ref: "friend-thoughts",  // Does this reference the folder or the variable?
+                ref: "friendThoughts",  
             },
         ],
 
         friends: [
             {
                 type: Schema.Types.ObjectId,
-                ref: "user-thoughts",    // Does this reference the folder or the variable?
+                ref: "userThoughts",   
             },
         ],
     },
@@ -39,7 +39,7 @@ const userThoughtsSchema = new Schema (
     }
 );
 
-// Schema settings
+// // Virtual called friendCount that retrieves the length of the user's friends array field on query.
 userThoughtsSchema.virtual("friendCount").get(function() {
     return this.friends.length;
 });

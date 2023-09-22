@@ -1,5 +1,5 @@
 const { Schema, model, Types } = require("mongoose");
-const dateFormat = require("../utils/date-format");
+const dateFormat = require("../util/dateFormat");
 
 // This schema was given in the homework description
 // This will not be a model, but will be used as the reaction
@@ -20,9 +20,8 @@ const reactionSchema = new Schema(
             required: true,
         },
         createdAt: {
-            type: Date,
+            type: Date, // This is sim to Activity 28
             default: Date.now,
-            get: (timestamp) => dateFormat(timestamp),
         },
     },
     {
@@ -33,6 +32,7 @@ const reactionSchema = new Schema(
     }
 );
 
+// This information was given in the homework description
 const friendThoughtsSchema = new Schema (
     {
         thoughtText: {
@@ -43,8 +43,7 @@ const friendThoughtsSchema = new Schema (
         },
         createdAt: {
             type: Date,
-            default: Date.now,
-            get: (timestamp) => dateFormat(timestamp),
+            default: Date.now, // This is sim to Activity 28
         },
         username: {
             type: String,
@@ -61,11 +60,11 @@ const friendThoughtsSchema = new Schema (
     }
 );
 
-// Virtual called reactionCount that retrieves the length of the friend thought's reactions array field in query.
+// Virtual called reactionCount that retrieves the length of the friend thought's reactions array field on query.
 friendThoughtsSchema.virtual("reactionCount").get(function() {
     return this.reactions.length;
 });
 
-const friendThoughts = model("friend-thoughts", friendThoughtsSchema);
+const friendThoughts = model("friendThoughts", friendThoughtsSchema);
 
 module.exports = friendThoughts;
