@@ -50,9 +50,7 @@ const thoughtsController = {
             })
             .then((dbUserData) => {
                 if (!dbUserData) {
-                    return res
-                        .status(404)
-                        .json({ message: "A thought was created, but there is no user with this ID!" });
+                    return res.status(404).json({ message: "A thought was created, but there is no user with this ID!" });
                 }
                 res.json({ message: "A thought was created successfully!" });
             })
@@ -106,7 +104,7 @@ const thoughtsController = {
         )
             .then((dbThoughtsData) => {
                 if (!dbThoughtsData) {
-                    res.status.json({ message: "Sorry, there are no thoughts with this ID!" });
+                    res.status(404).json({ message: "Sorry, there are no thoughts with this ID!" });
                     return;
                 }
                 res.json(dbThoughtsData);

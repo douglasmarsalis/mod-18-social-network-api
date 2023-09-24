@@ -71,7 +71,7 @@ const userController = {
                 if (!dbUserData) {
                     return res.status(404).json({ message: "Sorry, there are no users with this ID!" });
                 }
-                return thoughts.deleteMany({ _id: { $in: dbUserData.thoughts } });
+                return thoughts.deleteMany({ _id: { $in: dbUserData.thoughts } });  // Used to match documents where a specific field value matches any of the values in provided array
             })
             .then(() => {
                 res.json({ message: "The user and thoughts were deleted successfully!" });
@@ -82,13 +82,13 @@ const userController = {
 // ADD a Friend
     addFriend({ params }, res) {
         user.findOneAndUpdate(
-            { _id: params.userID },
+            { _id: params.userId },
             { $addToSet: { friends: params.friendId } }, // Adds a value to an array unless the value is already present
             { new: true, runVaildators: true }  // runs validation checks on the data when update document
         )
             .then((dbUserData) => {
                 if (!dbUserData) {
-                    res.status.json({ message: "Sorry, there are no users with this ID!" });
+                    res.status(404).json({ message: "Sorry, there are no users with this ID!" });
                     return;
                 }
                 res.json(dbUserData);
@@ -105,7 +105,7 @@ const userController = {
         )
             .then((dbUserData) => {
                 if (!dbUserData) {
-                    res.status.json({ message: "Sorry, there are no users with this ID!" });
+                    res.status(404).json({ message: "Sorry, there are no users with this ID!" });
                     return;
                 }
                 res.json(dbUserData);
