@@ -33,7 +33,7 @@ const reactionSchema = new Schema(
 );
 
 // This information was given in the homework description
-const friendThoughtsSchema = new Schema (
+const thoughtsSchema = new Schema (
     {
         thoughtText: {
             type: String,
@@ -61,10 +61,10 @@ const friendThoughtsSchema = new Schema (
 );
 
 // Virtual called reactionCount that retrieves the length of the friend thought's reactions array field on query.
-friendThoughtsSchema.virtual("reactionCount").get(function() {
+thoughtsSchema.virtual("reactionCount").get(function() {
     return this.reactions.length;
 });
 
-const friendThoughts = model("friendThoughts", friendThoughtsSchema);
+const thoughts = model("thoughts", thoughtsSchema);
 
-module.exports = friendThoughts;
+module.exports = this.thoughts;
