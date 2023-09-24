@@ -31,7 +31,7 @@ const userController = {
             .select("-_v")
             .then((dbUserData) => {
                 if (!dbUserData) {
-                    return res.status(404).json({ message: "Sorry, there are no users with this ID!" });
+                    return res.status(404).json({ message: "😡 Sorry, there are no users with this ID!" });
                 }
                 res.json(dbUserData);
             })
@@ -56,7 +56,7 @@ const userController = {
         })
             .then((dbUserData) => {
                 if (!dbUserData) {
-                    res.status(404).json({ message: "There are no users found with this ID!" });
+                    res.status(404).json({ message: "😡 There are no users found with this ID!" });
                     return;
                 }
                 res.json(dbUserData);
@@ -69,12 +69,12 @@ const userController = {
         user.findOneAndDelete({ _id: params.id })
             .then((dbUserData) => {
                 if (!dbUserData) {
-                    return res.status(404).json({ message: "Sorry, there are no users with this ID!" });
+                    return res.status(404).json({ message: "😡 Sorry, there are no users with this ID!" });
                 }
                 return thoughts.deleteMany({ _id: { $in: dbUserData.thoughts } });  // Used to match documents where a specific field value matches any of the values in provided array
             })
             .then(() => {
-                res.json({ message: "The user and thoughts were deleted successfully!" });
+                res.json({ message: "😎 The user and thoughts were deleted successfully!" });
             })
             .catch((err) => res.json(err));
     },
@@ -88,7 +88,7 @@ const userController = {
         )
             .then((dbUserData) => {
                 if (!dbUserData) {
-                    res.status(404).json({ message: "Sorry, there are no users with this ID!" });
+                    res.status(404).json({ message: "😡 Sorry, there are no users with this ID!" });
                     return;
                 }
                 res.json(dbUserData);
@@ -105,7 +105,7 @@ const userController = {
         )
             .then((dbUserData) => {
                 if (!dbUserData) {
-                    res.status(404).json({ message: "Sorry, there are no users with this ID!" });
+                    res.status(404).json({ message: "😡 Sorry, there are no users with this ID!" });
                     return;
                 }
                 res.json(dbUserData);
