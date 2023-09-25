@@ -3,7 +3,7 @@
 ## [![License: APACHE2.0](https://img.shields.io/badge/License:_MIT-orange)](https://opensource.org/license/mit/)
 
 ## Description
-
+This is a social network application that allows the user to share their thoughts, react to their friend's thoughts and create or delete a friend from their friend list.
 ## User Story
 AS A social media startup,
 I WANT an API for my social network that uses a NoSQL database
@@ -30,14 +30,17 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
     - npm init -y
     - npm install express
     - npm install mongoose
-    - npm install moment
 4. To run the application, type: npm start inside the Terminal.
 
 ## Tests
 * Testing restful API calls with Insomnia
 
 ## Features
-
+* JavaScript
+* Express.js
+* Mongoose
+* MongoDB
+* Node.js
 ## Demonstration Videos
 
 ## Link to Deployed Site
