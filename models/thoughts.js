@@ -20,8 +20,9 @@ const reactionSchema = new Schema(
             required: true,
         },
         createdAt: {
-            type: Date, // This is sim to Activity 28
+            type: Date, 
             default: Date.now,
+            get: (date) => date.toDateString(),
         },
     },
     {
@@ -43,7 +44,8 @@ const thoughtsSchema = new Schema (
         },
         createdAt: {
             type: Date,
-            default: Date.now, // This is sim to Activity 28
+            default: Date.now,
+            get: (date) => date.toDateString(), 
         },
         username: {
             type: String,
@@ -65,6 +67,6 @@ thoughtsSchema.virtual("reactionCount").get(function() {
     return this.reactions.length;
 });
 
-const thoughts = model("thoughts", thoughtsSchema);
+const Thoughts = model("thoughts", thoughtsSchema);
 
-module.exports = this.thoughts;
+module.exports = { Thoughts, reactionSchema };

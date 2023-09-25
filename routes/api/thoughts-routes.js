@@ -1,4 +1,4 @@
-const router = require("express").Router;
+const router = require("express").Router();
 
 // Variables found in thoughts-controller.js
 const {
@@ -9,7 +9,7 @@ const {
     deleteThoughts,
     addReactions,
     removeReactions,
-} = require("../../controlllers/thoughts-controller");
+} = require("../../controllers/thoughts-controller");
 
 // /api/thoughts
 router.route("/").get(getAllThoughts).post(createThoughts);

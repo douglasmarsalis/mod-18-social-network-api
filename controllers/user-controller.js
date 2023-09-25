@@ -1,116 +1,109 @@
-const { user, thoughts } = require("../models");
+const { User, Thoughts } = require("../models");
 
 // Get All User
 const userController = {
-    getAllUser(req, res) {
-        user.find({}) // finds this data
-            .populate({
-                path: "friends", // populates friends field
-                select: "-_v",  // excludes field
-            })
-            .select("-_v")  // excludes field
-            .sort({ _id: -1 })  // sorts by id
-            .then((dbUserData) => res.json(dbUserData)) // sends data
-            .catch((err) => {       // or sends error
-                console.log(err);
-                res.sendStatus(400);
-            });
+    async getAllUser(req, res) {
+        try{
+            const userInfo = await User.find();
+            res.json(userInfo);
+        }
+        catch (err) {
+            res.status(500).json(err);
+        }
     },
 
 // GET Single User by ID
-    getUserById({ params }, res) {
-        user.findOne({ _id: params.id })
-            .populate({
-                path: "thoughts",
-                select: "-_v",
-            })
-            .populate({
-                path: "friends",
-                select: "-_v",
-            })
-            .select("-_v")
-            .then((dbUserData) => {
-                if (!dbUserData) {
-                    return res.status(404).json({ message: "😡 Sorry, there are no users with this ID!" });
-                }
-                res.json(dbUserData);
-            })
-            .catch((err) => {
-                console.log(err);
-                res.sendStatus(400);
-            });
+    async getUserById(req, res) {
+        try {
+            const user = await User.findOne( { _id: req.params.userId } )  
+                .select("-__v");    // excludes field
+            if (!user) {
+                return res.status(404).json({ message: "😡 Sorry, there are no users with this ID!" });
+            }
+            res.json(user);
+        } catch (err) {
+            res.status(500).json(err);
+        }
     },
 
 // CREATE a User
-    createUser({ body }, res) {
-        user.create(body)
-            .then((dbUserData) => res.json(dbUserData))
-            .catch((err) => res.json(err));
+    async createUser(req, res) {
+        try {
+            const userInfo = await User.create(req.body)
+            res.json(userInfo)
+        }
+        catch (err) {
+            res.status(500).json(err);
+        }
     }, 
 
 // Update User by ID
-    updateUser({ params, body }, res) {
-        user.findOneAndUpdate({ _id: params.id }, body, {
-            new: true,
-            runValidators: true,    // runs validation checks on the data when update document
-        })
-            .then((dbUserData) => {
-                if (!dbUserData) {
-                    res.status(404).json({ message: "😡 There are no users found with this ID!" });
-                    return;
-                }
-                res.json(dbUserData);
-            })
-            .catch((err) => res.json(err));
+    async updateUser(req, res) {
+        try {
+            const user = await User.findOneAndUpdate(
+                { _id: req.params.userId },
+                { $set: req.body },
+                { runValidators: true, new: true }
+            );
+            if (!user) {
+                return res.status(404).json({ message: "😡 Sorry, there are no users with this ID!" });
+            }
+            res.json(user);
+        } catch (err) {
+            res.status(500).json(err)
+        }
     },
 
 // DELETE a User
-    deleteUser({ params }, res) {
-        user.findOneAndDelete({ _id: params.id })
-            .then((dbUserData) => {
-                if (!dbUserData) {
-                    return res.status(404).json({ message: "😡 Sorry, there are no users with this ID!" });
-                }
-                return thoughts.deleteMany({ _id: { $in: dbUserData.thoughts } });  // Used to match documents where a specific field value matches any of the values in provided array
-            })
-            .then(() => {
-                res.json({ message: "😎 The user and thoughts were deleted successfully!" });
-            })
-            .catch((err) => res.json(err));
+    async deleteUser(req, res) {
+        try {
+            const user = await User.findOneAndDelete(
+                { _id: req.params.userId },
+            );
+            if (!user) {
+                return res.status(404).json({ message: "😡 Sorry, there are no users with this ID!" });
+            }
+            await Thoughts.deleteMany({ _id: { $in: user.thoughts } });
+            res.json({ message: "😎 The user has been deleted!" });
+        } catch (err) {
+            res.status(500).json(err)
+        }
     },
 
 // ADD a Friend
-    addFriend({ params }, res) {
-        user.findOneAndUpdate(
-            { _id: params.userId },
-            { $addToSet: { friends: params.friendId } }, // Adds a value to an array unless the value is already present
-            { new: true, runVaildators: true }  // runs validation checks on the data when update document
-        )
-            .then((dbUserData) => {
-                if (!dbUserData) {
-                    res.status(404).json({ message: "😡 Sorry, there are no users with this ID!" });
-                    return;
-                }
-                res.json(dbUserData);
-            })
-            .catch((err) => res.json(err));
+    async addFriend(req, res) {
+        try {
+            const user = await User.findOneAndUpdate(
+                { _id: req.params.userId },
+                { $addToSet: { friends: req.params.friendsId } },
+                { runVaidators: true, new: true }
+            );
+            if (!user) {
+                return res.status(404).json({ message: "😡 Sorry, there is no friend with this ID!" });
+            }
+            res.json(user);
+        }
+        catch (err) {
+            res.status(500).json(err);
+        }
     },
 
 // DELETE a Friend
-    removeFriend({ params }, res) {
-        user.findOneAndUpdate(
-            { _id: params.userId },
-            { $pull: { friends: params.friendId } }, // Updates operations to removes specific elements from an array within a document
-            { new: true }
-        )
-            .then((dbUserData) => {
-                if (!dbUserData) {
-                    res.status(404).json({ message: "😡 Sorry, there are no users with this ID!" });
-                    return;
-                }
-                res.json(dbUserData);
-            })
-            .catch((err) => res.json(err));
+    async deleteFriend(req, res) {
+        try {
+            const user = await User.findOneAndUpdate(
+                { _id: req.params.userId },
+                { $pull: { friends: { _id: req.params.friendsId } } },
+                { runVaidators: true, new: true, overwrite: true }
+            );
+            if (!user) {
+                return res.status(404).json({ message: "😡 Sorry, there is no friend with this ID!" });
+            }
+            res.json(user);
+        }
+        catch (err) {
+            res.status(500).json(err);
+        }
     },
 };
 
