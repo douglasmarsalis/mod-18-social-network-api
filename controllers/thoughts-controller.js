@@ -1,7 +1,6 @@
 const Thoughts = require('../models/Thoughts');
 const User = require('../models/User')
 
-
 // GET All Thoughts
 
 const thoughtsController = {
@@ -35,7 +34,7 @@ const thoughtsController = {
             const thoughts = await Thoughts.create(req.body)
 
             let user = await User.findOneAndUpdate(
-                { username: req.body.username },
+                { _id: req.body._id },
                 { $addToSet: { thoughts: thoughts._id } },
                 { new: true }
             );
@@ -75,7 +74,7 @@ const thoughtsController = {
                 return res.status(404).json({ message: "😡 Sorry, there are no thoughts with this ID!" });
             }
             const user = await User.findOneAndUpdate(
-                { username: thoughts.username },
+                { _id: thoughts._id },
                 { $pull: { thoughts: req.params.thoughtsId } },
                 { new: true }
             );
