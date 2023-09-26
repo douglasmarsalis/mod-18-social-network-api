@@ -57,16 +57,15 @@ const userController = {
 // DELETE a User
     async deleteUser(req, res) {
         try {
-            const user = await User.findOneAndDelete(
-                { _id: req.params.userId },
-            );
+            const user = await User.findOneAndDelete({ _id: req.params.userId });
+
             if (!user) {
                 return res.status(404).json({ message: "😡 Sorry, there are no users with this ID!" });
             }
             await Thoughts.deleteMany({ _id: { $in: user.thoughts } });
-            res.json({ message: "😎 The user has been deleted!" });
+            res.json({ message: "😎 The user has been deleted!" })
         } catch (err) {
-            res.status(500).json(err)
+            res.status(500).json(err);
         }
     },
 

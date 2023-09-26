@@ -1,5 +1,4 @@
 const { Schema, model, Types } = require("mongoose");
-const dateFormat = require("../util/dateFormat");
 
 // This schema was given in the homework description
 // This will not be a model, but will be used as the reaction
@@ -38,7 +37,7 @@ const thoughtsSchema = new Schema (
     {
         thoughtText: {
             type: String,
-            required: "Thoughts are required!",
+            required: true,
             minlength: 1,
             maxlength: 280,
         },

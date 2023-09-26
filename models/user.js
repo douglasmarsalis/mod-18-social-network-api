@@ -6,28 +6,28 @@ const userSchema = new Schema (
         username: {
             type: String,
             unique: true,
-            require: "Username is required!",
+            require: true,
             trim: true,
         },
 
         email: {
             type: String,
             unique: true,
-            require: "Username is required!",
+            require: true,
             match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/],
         },
 
         thoughts: [
             {
                 type: Schema.Types.ObjectId,
-                ref: "friendThoughts",  
+                ref: 'thoughts',  
             },
         ],
 
         friends: [
             {
                 type: Schema.Types.ObjectId,
-                ref: "userThoughts",   
+                ref: 'user',   
             },
         ],
     },
@@ -40,10 +40,10 @@ const userSchema = new Schema (
 );
 
 // // Virtual called friendCount that retrieves the length of the user's friends array field on query.
-userSchema.virtual("friendCount").get(function() {
+userSchema.virtual('friendCount').get(function() {
     return this.friends.length;
 });
 
-const User = model("User", userSchema);
+const User = model('user', userSchema);
 
 module.exports = User;

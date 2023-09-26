@@ -17,7 +17,7 @@ const thoughtsController = {
     async getThoughtsById(req, res) {
         try {
             const thoughts = await Thoughts.findOne({ _id: req.params.thoughtsId })
-                .select("-__v");    // excludes field
+
             if (!thoughts) {
                 return res.status(404).json({ message: "😡 Sorry, there are no thoughts with this ID!" });
             }
@@ -40,7 +40,7 @@ const thoughtsController = {
             if (!user) {
                 return res.status(404).json({ message: "😡 A thought was created, but there is no user with this ID!" })
             }
-            res.json({ message: "😎 A thought was created successfully!" });
+            res.json({ message: '😎 A thought was created successfully!' });
         }
         catch (err) {
             res.json(err);
@@ -58,7 +58,7 @@ const thoughtsController = {
             if (!thoughts) {
                 return res.status(404).json({ message: "😡 Sorry, there are no thoughts with this ID!" });
             }
-            res.json(user);
+            res.json(thoughts);
         } catch (err) {
             res.status(500).json(err)
         }
@@ -67,14 +67,13 @@ const thoughtsController = {
     // DELETE Thought
     async deleteThoughts(req, res) {
         try {
-            const thoughts = await Thoughts.findOneAndRemove(
-                { _id: req.params.userId },
-            );
+            const thoughts = await Thoughts.findOneAndRemove({ _id: req.params.thoughtsId });
+
             if (!thoughts) {
                 return res.status(404).json({ message: "😡 Sorry, there are no thoughts with this ID!" });
             }
             const user = await User.findOneAndUpdate(
-                { thoughts: req.params.thoughtsId },
+                { username: thoughts.username },
                 { $pull: { thoughts: req.params.thoughtsId } },
                 { new: true }
             );
