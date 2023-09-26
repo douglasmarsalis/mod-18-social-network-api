@@ -21,6 +21,7 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
 ## Sources
 * Rice University Boot Camp Activities 18 NoSQL
 * Emojis - https://unicode.org/emoji/charts/full-emoji-list.html
+* Big thanks to Paul, Dane, and Lee for your debugging skills!
 
 ## Usage
 * This repo has not been deployed.  You will need to do the following to run the application:
@@ -33,7 +34,7 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
 4. To run the application, type: npm start inside the Terminal.
 
 ## Tests
-* Testing restful API calls with Insomnia
+* Testing restful API calls with Insomnia and MongoDB
 
 ## Features
 * JavaScript

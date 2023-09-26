@@ -1,7 +1,8 @@
-const { User } = require("../models/user");
-const { Thoughts } = require("../models/thoughts");
+const Thoughts = require('../models/Thoughts');
+const User = require('../models/User')
 
 // GET All Thoughts
+
 const thoughtsController = {
     async getAllThoughts(req, res) {
             try {
@@ -50,15 +51,15 @@ const thoughtsController = {
     // UPDATE Thought by ID
     async updateThoughts(req, res) {
         try {
-            const thoughts = await Thoughts.findOneAndUpdate(
+            const thought = await Thoughts.findOneAndUpdate(
                 { _id: req.params.thoughtsId },
                 { $set: req.body },
                 { runValidators: true, new: true }
             );
-            if (!thoughts) {
+            if (!thought) {
                 return res.status(404).json({ message: "😡 Sorry, there are no thoughts with this ID!" });
             }
-            res.json(thoughts);
+            res.json(thought);
         } catch (err) {
             res.status(500).json(err)
         }
