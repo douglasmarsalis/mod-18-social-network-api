@@ -89,7 +89,7 @@ const userController = {
     },
 
 // DELETE a Friend
-    async deleteFriend(req, res) {
+    async removeFriend(req, res) {
         try {
             const user = await User.findOneAndUpdate(
                 { _id: req.params.userId },

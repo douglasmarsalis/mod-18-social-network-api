@@ -1,4 +1,4 @@
-const { User, Thoughts } = require("../models");
+const { User } = require("../models/User");
 const { Thoughts } = require("../models/Thoughts");
 
 // GET All Thoughts
